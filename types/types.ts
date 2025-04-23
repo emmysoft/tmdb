@@ -1,5 +1,5 @@
 export interface Movies {
-    id: number
+    id: number | string
     title: string
     overview: string
     poster_path: string

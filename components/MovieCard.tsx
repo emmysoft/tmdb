@@ -1,60 +1,25 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { Link } from 'expo-router'
-import { Movies } from '@/types/types';
+import { useRouter } from 'expo-router';
+import { Image, Text, View } from 'react-native';
+import styled from 'styled-components/native';
 
-type Props = {
-    movie: Movies;
-}
+const Card = styled.Pressable`
+  flex-direction: row;
+  margin-bottom: 12px;
+`;
 
-const MovieCard = ({ movie }: Props) => {
+export default function MovieCard({ movie }: { movie: any }) {
+    const router = useRouter();
     return (
-        <>
-            <Link href={`/movie/${movie.id}`} asChild>
-                <TouchableOpacity style={styles.card}>
-                    <Image
-                        source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-                        style={styles.poster}
-                    />
-                    <View style={styles.info}>
-                        <Text style={styles.title} numberOfLines={1}>
-                            {movie.title}
-                        </Text>
-                        <Text style={styles.meta}>
-                            {new Date(movie.release_date)?.getFullYear()} | {movie.vote_average} ★
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            </Link>
-        </>
-    )
+        <Card onPress={() => router.push(`/movie/${movie.id}`)}>
+            <Image
+                source={{ uri: `https://image.tmdb.org/t/p/w185${movie.poster_path}` }}
+                style={{ width: 100, height: 150, borderRadius: 10 }}
+            />
+            <View style={{ marginLeft: 10, flex: 1 }}>
+                <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{movie.title}</Text>
+                <Text>{movie.release_date?.split('-')[0]}</Text>
+                <Text>⭐ {movie.vote_average}</Text>
+            </View>
+        </Card>
+    );
 }
-
-export default MovieCard
-
-const styles = StyleSheet.create({
-    card: {
-        flexDirection: 'row',
-        marginBottom: 12,
-        backgroundColor: '#f0f0f0',
-        borderRadius: 10,
-        overflow: 'hidden',
-    },
-    poster: {
-        width: 100,
-        height: 150,
-    },
-    info: {
-        flex: 1,
-        padding: 10,
-        justifyContent: 'space-between',
-    },
-    title: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    meta: {
-        fontSize: 14,
-        color: '#555',
-    },
-})
