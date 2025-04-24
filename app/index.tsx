@@ -7,6 +7,7 @@ import { fetchPopularMovies } from '@/lib/tmdb';
 export default function HomeScreen() {
   const [movies, setMovies] = useState([]);
 
+  console.log("Index screen")
   useEffect(() => {
     fetchPopularMovies().then((data) => setMovies(data.results));
   }, []);
